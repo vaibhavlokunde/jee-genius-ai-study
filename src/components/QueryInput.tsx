@@ -40,7 +40,11 @@ const QueryInput: React.FC<QueryInputProps> = ({ onSubmit, isProcessing }) => {
     "What is the hybridization in benzene?",
     "Explain Newton's laws of motion.",
     "How do I solve integration by parts?",
-    "Explain the reaction mechanism of Aldol condensation."
+    "Explain the reaction mechanism of Aldol condensation.",
+    "What is the Heisenberg Uncertainty Principle?",
+    "How do I find the eigenvalues of a 3x3 matrix?",
+    "Explain the concept of resonance in organic chemistry.",
+    "What is the difference between enthalpy and entropy?"
   ];
 
   const handleSampleQuestion = (question: string) => {

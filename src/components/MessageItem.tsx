@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { User, Bot } from 'lucide-react';
+import { User, Bot, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Message {
@@ -15,21 +15,26 @@ interface MessageItemProps {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message, isLoading = false }) => {
-  // Function to format content with math and code highlighting
+  // Enhanced function to format content with math, code highlighting, and markdown
   const formatContent = (content: string) => {
+    if (!content) return null;
+    
     // First split by paragraphs
     return content.split('\n').map((paragraph, idx) => {
-      // Check if this is a code block
+      // Handle code blocks
       if (paragraph.trim().startsWith('```')) {
-        const codeContent = paragraph.replace(/```(.*)\n/, '').replace(/```$/, '');
+        const language = paragraph.replace(/```(\w+)?.*/, '$1').trim();
+        const codeContent = paragraph.replace(/```(\w+)?\n?/, '').replace(/```$/, '');
+        
         return (
           <pre key={idx} className="bg-gray-800 text-white p-3 rounded-md my-2 overflow-x-auto text-sm">
+            {language && <div className="text-xs text-gray-400 mb-1">{language}</div>}
             <code>{codeContent}</code>
           </pre>
         );
       }
       
-      // Check if this is math content (wrapped in $ signs)
+      // Handle math content (wrapped in $ signs)
       if (paragraph.includes('$') && paragraph.split('$').length > 2) {
         let parts = paragraph.split(/(\$[^$]+\$)/g);
         return (
@@ -42,14 +47,54 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, isLoading = false })
                   </span>
                 );
               }
-              return <span key={partIdx}>{part}</span>;
+              return formatMarkdown(part, partIdx);
             })}
           </p>
         );
       }
+
+      // Handle markdown for bullet points
+      if (paragraph.trim().startsWith('-') || paragraph.trim().startsWith('*')) {
+        return (
+          <ul key={idx} className="list-disc list-inside my-1 ml-2">
+            <li>{formatMarkdown(paragraph.trim().substring(1).trim(), 0)}</li>
+          </ul>
+        );
+      }
       
-      return <p key={idx} className="my-2">{paragraph}</p>;
+      // Handle markdown for numbered lists
+      if (/^\d+\.\s/.test(paragraph.trim())) {
+        return (
+          <ol key={idx} className="list-decimal list-inside my-1 ml-2">
+            <li>{formatMarkdown(paragraph.trim().replace(/^\d+\.\s/, ''), 0)}</li>
+          </ol>
+        );
+      }
+      
+      // Handle section headers (starts with ** or __)
+      if (paragraph.trim().startsWith('**') && paragraph.trim().endsWith(':**')) {
+        const headerText = paragraph.trim().replace(/^\*\*/, '').replace(/:\*\*$/, ':');
+        return (
+          <h3 key={idx} className="font-bold my-2">{headerText}</h3>
+        );
+      }
+      
+      // Regular paragraph with markdown formatting
+      return <p key={idx} className="my-2">{formatMarkdown(paragraph, 0)}</p>;
     });
+  };
+  
+  // Helper function to format markdown within a line
+  const formatMarkdown = (text: string, key: number) => {
+    // Handle bold text
+    let formattedText = text.split(/(\*\*[^*]+\*\*)/g).map((part, idx) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={`bold-${key}-${idx}`}>{part.substring(2, part.length - 2)}</strong>;
+      }
+      return part;
+    });
+    
+    return formattedText;
   };
 
   return (
@@ -83,6 +128,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, isLoading = false })
         )}>
           {formatContent(message.content)}
         </div>
+        
+        {/* Sources section - would appear if the content includes "Sources:" */}
+        {message.type === 'assistant' && message.content.includes('**Sources:**') && (
+          <div className="mt-3 pt-2 border-t border-gray-200">
+            <div className="flex items-center text-xs text-gray-500 mb-1">
+              <BookOpen className="w-3 h-3 mr-1" />
+              <span>References</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
