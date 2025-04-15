@@ -15,6 +15,43 @@ interface MessageItemProps {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message, isLoading = false }) => {
+  // Function to format content with math and code highlighting
+  const formatContent = (content: string) => {
+    // First split by paragraphs
+    return content.split('\n').map((paragraph, idx) => {
+      // Check if this is a code block
+      if (paragraph.trim().startsWith('```')) {
+        const codeContent = paragraph.replace(/```(.*)\n/, '').replace(/```$/, '');
+        return (
+          <pre key={idx} className="bg-gray-800 text-white p-3 rounded-md my-2 overflow-x-auto text-sm">
+            <code>{codeContent}</code>
+          </pre>
+        );
+      }
+      
+      // Check if this is math content (wrapped in $ signs)
+      if (paragraph.includes('$') && paragraph.split('$').length > 2) {
+        let parts = paragraph.split(/(\$[^$]+\$)/g);
+        return (
+          <p key={idx} className="my-2">
+            {parts.map((part, partIdx) => {
+              if (part.startsWith('$') && part.endsWith('$')) {
+                return (
+                  <span key={partIdx} className="math-content font-medium bg-jee-background px-1 py-0.5 rounded">
+                    {part.substring(1, part.length - 1)}
+                  </span>
+                );
+              }
+              return <span key={partIdx}>{part}</span>;
+            })}
+          </p>
+        );
+      }
+      
+      return <p key={idx} className="my-2">{paragraph}</p>;
+    });
+  };
+
   return (
     <div
       className={cn(
@@ -44,9 +81,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, isLoading = false })
           "message-content prose prose-sm max-w-none",
           isLoading && "animate-pulse-slow"
         )}>
-          {message.content.split('\n').map((paragraph, idx) => (
-            <p key={idx}>{paragraph}</p>
-          ))}
+          {formatContent(message.content)}
         </div>
       </div>
     </div>

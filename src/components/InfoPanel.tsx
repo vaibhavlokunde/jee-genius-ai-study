@@ -1,105 +1,87 @@
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Lightbulb, BookOpen, Sparkles } from 'lucide-react';
+import { BookOpen, Database, Cpu, Zap, BookText, ScrollText } from 'lucide-react';
 
 const InfoPanel: React.FC = () => {
   return (
-    <div className="p-4">
-      <Tabs defaultValue="about">
-        <TabsList className="grid grid-cols-3 mb-4">
-          <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="examples">Examples</TabsTrigger>
-          <TabsTrigger value="subjects">Subjects</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="about">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-jee-primary" />
-                About JEE Genius AI
-              </CardTitle>
-              <CardDescription>
-                Your AI-powered study assistant for JEE preparation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">
-                JEE Genius AI uses advanced RAG (Retrieval-Augmented Generation) technology 
-                to provide accurate, contextual answers to your JEE questions. Our system is trained 
-                on comprehensive JEE materials including NCERT textbooks, previous year questions, 
-                and coaching materials.
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="examples">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-jee-primary" />
-                Example Questions
-              </CardTitle>
-              <CardDescription>
-                Try asking these questions to get started
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm">
-                <li className="p-2 bg-jee-background rounded-md">
-                  Explain the concept of resonance in organic chemistry
-                </li>
-                <li className="p-2 bg-jee-background rounded-md">
-                  What is the application of Gauss's law in electrostatics?
-                </li>
-                <li className="p-2 bg-jee-background rounded-md">
-                  Derive the equation for vertical circular motion
-                </li>
-                <li className="p-2 bg-jee-background rounded-md">
-                  Explain the VSEPR theory and predict the shape of PCl₅
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="subjects">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-jee-primary" />
-                Covered Subjects
-              </CardTitle>
-              <CardDescription>
-                JEE Genius AI covers all main JEE subjects
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="bg-jee-background p-3 rounded-md">
-                  <h3 className="font-medium">Physics</h3>
-                  <p className="text-sm text-gray-600">Mechanics, Electromagnetics, Thermodynamics, Modern Physics</p>
-                </div>
-                <div className="bg-jee-background p-3 rounded-md">
-                  <h3 className="font-medium">Chemistry</h3>
-                  <p className="text-sm text-gray-600">Organic, Inorganic, Physical Chemistry</p>
-                </div>
-                <div className="bg-jee-background p-3 rounded-md">
-                  <h3 className="font-medium">Mathematics</h3>
-                  <p className="text-sm text-gray-600">Calculus, Algebra, Coordinate Geometry, Trigonometry</p>
-                </div>
-                <div className="bg-jee-background p-3 rounded-md">
-                  <h3 className="font-medium">Exam Tips</h3>
-                  <p className="text-sm text-gray-600">Strategy, Time Management, Important Topics</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+    <div className="p-4 space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-xl font-bold text-jee-primary flex items-center gap-2">
+          <BookOpen className="h-5 w-5" />
+          About JEE Genius
+        </h2>
+        <p className="text-sm text-gray-600">
+          JEE Genius AI is a specialized study assistant that uses Retrieval-Augmented Generation (RAG) 
+          to provide accurate answers to JEE preparation questions.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="font-semibold text-gray-700 flex items-center gap-2">
+          <Database className="h-4 w-4 text-jee-secondary" />
+          RAG Architecture
+        </h3>
+        <div className="bg-jee-background rounded-md p-3 text-sm space-y-3">
+          <div className="flex items-start gap-2">
+            <div className="bg-jee-primary/10 p-1 rounded">
+              <ScrollText className="h-4 w-4 text-jee-primary" />
+            </div>
+            <div>
+              <p className="font-medium">Knowledge Retrieval</p>
+              <p className="text-xs text-gray-600">Indexes and searches through curated JEE study materials</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-2">
+            <div className="bg-jee-secondary/10 p-1 rounded">
+              <Cpu className="h-4 w-4 text-jee-secondary" />
+            </div>
+            <div>
+              <p className="font-medium">PyTorch Model</p>
+              <p className="text-xs text-gray-600">Processes queries through transformers architecture</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-2">
+            <div className="bg-jee-accent/10 p-1 rounded">
+              <Zap className="h-4 w-4 text-jee-accent" />
+            </div>
+            <div>
+              <p className="font-medium">Response Generation</p>
+              <p className="text-xs text-gray-600">Creates accurate, contextual answers based on retrieved information</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="font-semibold text-gray-700 flex items-center gap-2">
+          <BookText className="h-4 w-4 text-jee-secondary" />
+          Data Sources
+        </h3>
+        <ul className="text-sm space-y-2 text-gray-600">
+          <li className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-jee-primary"></div>
+            NCERT Physics, Chemistry, Mathematics
+          </li>
+          <li className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-jee-secondary"></div>
+            Previous years' JEE question papers
+          </li>
+          <li className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-jee-accent"></div>
+            Curated study materials from top coaching institutes
+          </li>
+          <li className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-jee-light"></div>
+            Problem-solving techniques and shortcuts
+          </li>
+        </ul>
+      </div>
+
+      <div className="border-t pt-4 text-xs text-gray-500">
+        <p>This prototype demonstrates the user interface. When connected to the PyTorch backend, it will provide comprehensive and accurate answers to your JEE preparation questions.</p>
+      </div>
     </div>
   );
 };
